@@ -7,15 +7,20 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController, PartOverlayViewController {
 
-    @IBOutlet weak var contentView: UIView!
+    // MARK: - IBOutlets
     
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var backgroundView: UIView!
-        
-    var animator: SettingsAnimator?
-    var profileVC: ProfileViewController?
+    
+    // MARK: - Private property
+    
+    fileprivate var animator: SettingsAnimator?
+    fileprivate var profileVC: ProfileViewController?
 
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -23,6 +28,8 @@ class SettingsViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         contentView.roundCorners(corners: [.topLeft, .bottomLeft], radius: 20)
     }
+    
+    // MARK: - IBActions
     
     @IBAction func didPressMyProfile(_ sender: UIButton) {
         guard let profileVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: ProfileViewController.identifier) as? ProfileViewController else { return }
@@ -38,6 +45,8 @@ class SettingsViewController: UIViewController {
     }
 }
 
+
+// MARK: - SettingsViewControllerTransitioningDelegate
 
 extension SettingsViewController: UIViewControllerTransitioningDelegate {
     

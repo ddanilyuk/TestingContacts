@@ -7,15 +7,21 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
-    var swipeInteractionController: SwipeInteractionController?
+    // MARK: - Public property
     
+    public var swipeInteractionController: SwipeInteractionController?
+    
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         swipeInteractionController = SwipeInteractionController(viewController: self)
     }
+    
+    // MARK: - IBActions
     
     @IBAction func didPressBack(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)

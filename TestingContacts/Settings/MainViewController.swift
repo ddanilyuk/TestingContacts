@@ -7,15 +7,15 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     
-    var animator: SettingsAnimator?
-//    var settingsVC: SettingsViewController?
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
+    
+    // MARK: - IBActions
     
     @IBAction func didPressShowSettings(_ sender: Any) {
         guard let settingsViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
@@ -26,6 +26,8 @@ class MainViewController: UIViewController {
     }
 }
 
+
+// MARK: - MainViewControllerTransitioningDelegate
 
 extension MainViewController: UIViewControllerTransitioningDelegate {
     

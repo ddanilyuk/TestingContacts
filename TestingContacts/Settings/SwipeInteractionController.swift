@@ -7,18 +7,21 @@
 
 import UIKit
 
-class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
+final class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
+    
+    // MARK: - Public property
     
     var interactionInProgress = false
     
+    // MARK: - Private property
+
     private var shouldCompleteTransition = false
     private weak var viewController: UIViewController!
     
-    
     init(viewController: UIViewController) {
         super.init()
-        self.viewController = viewController
         
+        self.viewController = viewController
         prepareGestureRecognizer(in: viewController.view)
     }
     
