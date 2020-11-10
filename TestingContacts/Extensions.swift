@@ -29,6 +29,17 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    func getSnapshotView() -> UIView {
+        return self.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+    }
+}
+
+extension UIStoryboard {
+    
+    static var main: UIStoryboard {
+        return UIStoryboard(name: "Main", bundle: Bundle.main)
+    }
 }
 
 extension UIView {

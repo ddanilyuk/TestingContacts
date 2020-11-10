@@ -1,5 +1,5 @@
 //
-//  Animator.swift
+//  TransitionAnimator.swift
 //  TestingContacts
 //
 //  Created by Denys Danyliuk on 10.11.2020.
@@ -7,16 +7,16 @@
 
 import UIKit
 
-final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-        
+final class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    
     static let duration: TimeInterval = 0.7
-
+    
     // MARK: - Public property
     
     public let presentationType: PresentationType
     public var offset: CGFloat = 0
     public var interactionController: SwipeInteractionController? = nil
-
+    
     init(presentationType: PresentationType, offset: CGFloat = 0, interactionController: SwipeInteractionController? = nil) {
         
         self.presentationType = presentationType
@@ -28,7 +28,7 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         
-        return SettingsAnimator.duration
+        return TransitionAnimator.duration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -42,18 +42,18 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         var snapshotView = UIView()
         let containerView = transitionContext.containerView
         let duration = transitionDuration(using: transitionContext)
-
+        
         switch presentationType {
         case .present:
-            snapshotView = toViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+            snapshotView = toViewController.getSnapshotView()
             toViewController.view.isHidden = true
             snapshotView.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width - offset, 0, 0)
         case .dismiss:
             if let fromViewController = fromViewController as? PartOverlayViewController {
-                snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+                snapshotView = fromViewController.getSnapshotView()
                 fromViewController.backgroundView.isHidden = true
             }
-            snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+            snapshotView = fromViewController.getSnapshotView()
             fromViewController.view.isHidden = true
         }
         
@@ -65,6 +65,7 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let animateOptions: UIView.AnimationOptions = isUserSwipeBack ? .curveLinear : .curveEaseInOut
         
         UIView.animate(withDuration: duration, delay: 0, options: animateOptions) {
+            
             switch self.presentationType {
             case .present:
                 snapshotView.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
@@ -72,12 +73,13 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 snapshotView.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width - self.offset, 0, 0)
             }
         } completion: { _ in
+            
             switch self.presentationType {
             case .present:
                 toViewController.view.isHidden = false
                 
                 if let toViewController = toViewController as? PartOverlayViewController {
-                    toViewController.backgroundView.addSubview(fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView())
+                    toViewController.backgroundView.addSubview(fromViewController.getSnapshotView())
                 }
             case .dismiss:
                 fromViewController.view.isHidden = false
@@ -94,9 +96,9 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 
-// MARK: - SettingsAnimator + PresentationType
+// MARK: - TransitionAnimator + PresentationType
 
-extension SettingsAnimator {
+extension TransitionAnimator {
     
     enum PresentationType {
         case present

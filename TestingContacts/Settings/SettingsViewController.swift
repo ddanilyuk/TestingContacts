@@ -8,7 +8,7 @@
 import UIKit
 
 final class SettingsViewController: UIViewController, PartOverlayViewController {
-
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var contentView: UIView!
@@ -16,9 +16,9 @@ final class SettingsViewController: UIViewController, PartOverlayViewController 
     
     // MARK: - Private property
     
-    fileprivate var animator: SettingsAnimator?
-    fileprivate var profileVC: ProfileViewController?
-
+    fileprivate var animator: TransitionAnimator?
+    fileprivate var profileViewController: ProfileViewController?
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -32,15 +32,15 @@ final class SettingsViewController: UIViewController, PartOverlayViewController 
     // MARK: - IBActions
     
     @IBAction func didPressMyProfile(_ sender: UIButton) {
-        guard let profileVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: ProfileViewController.identifier) as? ProfileViewController else { return }
-        self.profileVC = profileVC
-        profileVC.transitioningDelegate = self
-        profileVC.modalPresentationStyle = .fullScreen
+        guard let profileViewController = UIStoryboard.main.instantiateViewController(withIdentifier: ProfileViewController.identifier) as? ProfileViewController else { return }
+        self.profileViewController = profileViewController
+        profileViewController.transitioningDelegate = self
+        profileViewController.modalPresentationStyle = .fullScreen
         
-        present(profileVC, animated: true)
+        present(profileViewController, animated: true)
     }
     
-    @IBAction func didPressExit(_ sender: UIButton) {
+    @IBAction func didPressDismiss(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
 }
@@ -51,19 +51,19 @@ final class SettingsViewController: UIViewController, PartOverlayViewController 
 extension SettingsViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .present, interactionController: profileVC.swipeInteractionController)
+        guard let profileViewController = profileViewController else { return nil }
+        animator = TransitionAnimator(presentationType: .present, interactionController: profileViewController.swipeInteractionController)
         return animator
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .dismiss, interactionController: profileVC.swipeInteractionController)
+        guard let profileViewController = profileViewController else { return nil }
+        animator = TransitionAnimator(presentationType: .dismiss, interactionController: profileViewController.swipeInteractionController)
         return animator
     }
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        guard let animator = animator as? SettingsAnimator,
+        guard let animator = animator as? TransitionAnimator,
               let interactionController = animator.interactionController,
               interactionController.interactionInProgress else { return nil }
         return interactionController

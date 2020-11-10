@@ -9,6 +9,20 @@ import UIKit
 
 final class MainViewController: UIViewController {
     
+    // MARK: - Public property
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        statusBarStyle
+    }
+    
+    // MARK: - Private property
+
+    private var statusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -18,7 +32,7 @@ final class MainViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func didPressShowSettings(_ sender: Any) {
-        guard let settingsViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
+        guard let settingsViewController = UIStoryboard.main.instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
         settingsViewController.transitioningDelegate = self
         settingsViewController.modalPresentationStyle = .fullScreen
         
@@ -32,10 +46,10 @@ final class MainViewController: UIViewController {
 extension MainViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(presentationType: .present, offset: UIScreen.main.bounds.width * 0.2)
+        return TransitionAnimator(presentationType: .present, offset: UIScreen.main.bounds.width * 0.2)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(presentationType: .dismiss, offset: UIScreen.main.bounds.width * 0.2)
+        return TransitionAnimator(presentationType: .dismiss, offset: UIScreen.main.bounds.width * 0.2)
     }
 }

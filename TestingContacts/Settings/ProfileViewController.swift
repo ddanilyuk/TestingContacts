@@ -14,7 +14,7 @@ final class ProfileViewController: UIViewController {
     public var swipeInteractionController: SwipeInteractionController?
     
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +23,7 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - IBActions
     
-    @IBAction func didPressBack(_ sender: UIButton) {
+    @IBAction func didPressDismiss(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-    }    
+    }
 }
