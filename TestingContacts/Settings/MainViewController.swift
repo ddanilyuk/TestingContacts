@@ -19,10 +19,8 @@ class MainViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         guard let settingsVC = storyboard.instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
 
-        settingsVC.image = self.tabBarController?.view.takeScreenshot()
         settingsVC.transitioningDelegate = self
         settingsVC.modalPresentationStyle = .fullScreen
-
         present(settingsVC, animated: true)
     }
 }
@@ -31,11 +29,11 @@ class MainViewController: UIViewController {
 extension MainViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(type: .present)
+        return SettingsAnimator(presentationType: .present)
     }
     
     // 3
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(type: .dismiss)
+        return SettingsAnimator(presentationType: .dismiss)
     }
 }

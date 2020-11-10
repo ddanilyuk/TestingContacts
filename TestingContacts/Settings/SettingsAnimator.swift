@@ -9,17 +9,17 @@ import UIKit
 
 final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
+    static let duration: TimeInterval = 0.6
+    
     enum PresentationType {
         case present
         case dismiss
     }
     
-    static let duration: TimeInterval = 0.6
+    var presentationType: PresentationType
     
-    var type: PresentationType
-    
-    init(type: PresentationType) {
-        self.type = type
+    init(presentationType: PresentationType) {
+        self.presentationType = presentationType
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -28,57 +28,64 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromVC = transitionContext.viewController(forKey: .from),
-              let toVC = transitionContext.viewController(forKey: .to),
-              let snapshotFromVC = fromVC.view.snapshotView(afterScreenUpdates: true),
-              let snapshotToVC = toVC.view.snapshotView(afterScreenUpdates: true)
-        else { return }
-    
+              let toVC = transitionContext.viewController(forKey: .to) else { return }
+        
+        var snapshot = UIView()
+        switch presentationType {
+        case .present:
+            snapshot = toVC.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+        case .dismiss:
+            if let fromVC = fromVC as? SettingsViewController {
+                fromVC.backgroundView.subviews.forEach{ $0.isHidden = true }
+            }
+            snapshot = fromVC.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+        }
+        print(snapshot)
+        snapshot.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        
         let containerView = transitionContext.containerView
-
-        snapshotToVC.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        snapshotFromVC.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        
         containerView.addSubview(toVC.view)
-
         let duration = transitionDuration(using: transitionContext)
-        
-        switch type {
+        containerView.addSubview(snapshot)
+
+        switch presentationType {
         case .present:
             toVC.view.isHidden = true
-            snapshotToVC.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width, 0, 0)
-            containerView.addSubview(snapshotToVC)
+            snapshot.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
         case .dismiss:
             fromVC.view.isHidden = true
-            snapshotFromVC.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
-            containerView.addSubview(snapshotFromVC)
+            snapshot.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
         }
         
+
         UIView.animateKeyframes(
             withDuration: duration,
             delay: 0,
             options: .calculationModeLinear,
             animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 1) {
-                    switch self.type {
+                    switch self.presentationType {
                     case .present:
-                        snapshotToVC.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
+                        snapshot.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
                     case .dismiss:
-                        snapshotFromVC.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width, 0, 0)
+                        snapshot.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
                     }
                 }
             },
             completion: { _ in
-                switch self.type {
+
+                switch self.presentationType {
                 case .present:
                     toVC.view.isHidden = false
-                    snapshotToVC.removeFromSuperview()
+                    
+                    if let toVC = toVC as? SettingsViewController {
+                        toVC.backgroundView.addSubview(fromVC.view.snapshotView(afterScreenUpdates: true) ?? UIView())
+                    }
                 case .dismiss:
                     fromVC.view.isHidden = false
-                    snapshotFromVC.removeFromSuperview()
                 }
-                if transitionContext.transitionWasCancelled {
-                    toVC.view.removeFromSuperview()
-                }
+                snapshot.removeFromSuperview()
+
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         )

@@ -226,9 +226,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lgq-5K-n6N">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gG6-Rf-JPN">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                            </imageView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osr-Ji-05h" userLabel="ContentView">
                                 <rect key="frame" x="78" y="0.0" width="312" height="844"/>
                                 <subviews>
@@ -262,17 +263,17 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="osr-Ji-05h" secondAttribute="bottom" id="2gZ-sk-1DJ"/>
-                            <constraint firstItem="lgq-5K-n6N" firstAttribute="top" secondItem="R5z-zS-FKJ" secondAttribute="top" id="7yf-0t-Tj1"/>
                             <constraint firstItem="osr-Ji-05h" firstAttribute="top" secondItem="R5z-zS-FKJ" secondAttribute="top" id="Lte-GE-Htz"/>
+                            <constraint firstItem="gG6-Rf-JPN" firstAttribute="top" secondItem="R5z-zS-FKJ" secondAttribute="top" id="MUw-Q6-oT9"/>
                             <constraint firstItem="osr-Ji-05h" firstAttribute="width" secondItem="R5z-zS-FKJ" secondAttribute="width" multiplier="0.8" id="OSA-S6-5uY"/>
-                            <constraint firstItem="nMB-Fb-iyV" firstAttribute="trailing" secondItem="lgq-5K-n6N" secondAttribute="trailing" id="S4k-1Y-jpI"/>
                             <constraint firstItem="nMB-Fb-iyV" firstAttribute="trailing" secondItem="osr-Ji-05h" secondAttribute="trailing" id="Tza-mY-Acd"/>
-                            <constraint firstItem="lgq-5K-n6N" firstAttribute="leading" secondItem="nMB-Fb-iyV" secondAttribute="leading" id="fgk-HJ-Zsq"/>
-                            <constraint firstAttribute="bottom" secondItem="lgq-5K-n6N" secondAttribute="bottom" id="q2h-iP-yd0"/>
+                            <constraint firstItem="nMB-Fb-iyV" firstAttribute="trailing" secondItem="gG6-Rf-JPN" secondAttribute="trailing" id="VFN-t1-il6"/>
+                            <constraint firstItem="gG6-Rf-JPN" firstAttribute="leading" secondItem="R5z-zS-FKJ" secondAttribute="leading" id="ZkQ-Iq-R3y"/>
+                            <constraint firstAttribute="bottom" secondItem="gG6-Rf-JPN" secondAttribute="bottom" id="e3R-HU-lPM"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroundImageView" destination="lgq-5K-n6N" id="Yy5-f3-N8V"/>
+                        <outlet property="backgroundView" destination="gG6-Rf-JPN" id="ZJm-52-qAc"/>
                         <outlet property="contentView" destination="osr-Ji-05h" id="Yky-R6-NGr"/>
                     </connections>
                 </viewController>

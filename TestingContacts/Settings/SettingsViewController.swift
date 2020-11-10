@@ -10,29 +10,29 @@ import UIKit
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var backgroundView: UIView!
     
     var image: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        backgroundImageView.isHidden = true
-        if let image = image {
-            backgroundImageView.image = image
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
-        backgroundImageView.isHidden = false
+        backgroundView.isHidden = false
+
+//        backgroundImageView.isHidden = false
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        
-        backgroundImageView.isHidden = true
+
+//        backgroundImageView.isHidden = true
+    }
+    
+    deinit {
+        print("deinited")
     }
     
     override func viewDidLayoutSubviews() {
