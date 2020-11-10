@@ -42,7 +42,7 @@ class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
         print("UIScreen.main.bounds.width", UIScreen.main.bounds.width)
         print()
 
-        print("progress 1", progress)
+//        print("progress 1", easeInOutCubic(x: progress))
         
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
         print("progress 2", progress)
@@ -55,7 +55,9 @@ class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
             viewController.dismiss(animated: true, completion: nil)
         case .changed:
             shouldCompleteTransition = progress > 0.5
+            
             update(progress)
+//            update(easeInOutCubic(x: progress))
         case .cancelled:
             interactionInProgress = false
             cancel()
@@ -69,5 +71,9 @@ class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
         default:
             break
         }
+    }
+    
+    func easeInOutCubic(x: CGFloat) -> CGFloat {
+        return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
     }
 }

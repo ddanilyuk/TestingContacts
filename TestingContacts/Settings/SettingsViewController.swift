@@ -10,6 +10,7 @@ import UIKit
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var contentView: UIView!
+    
     @IBOutlet weak var backgroundView: UIView!
     
     var image: UIImage?
@@ -20,21 +21,6 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-    }
-    
-    deinit {
-        print("deinited")
     }
     
     override func viewDidLayoutSubviews() {
@@ -61,23 +47,20 @@ extension SettingsViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .present, scale: 1, interactionController: profileVC.swipeInteractionController!)
+        animator = SettingsAnimator(presentationType: .present, offset: 0, interactionController: profileVC.swipeInteractionController!)
         return animator
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .dismiss, scale: 1, interactionController: profileVC.swipeInteractionController!)
+        animator = SettingsAnimator(presentationType: .dismiss, offset: 0, interactionController: profileVC.swipeInteractionController!)
         return animator
     }
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let animator = animator as? SettingsAnimator,
               let interactionController = animator.interactionController,
-              interactionController.interactionInProgress
-        else {
-            return nil
-        }
+              interactionController.interactionInProgress else { return nil }
         return interactionController
     }
 }
