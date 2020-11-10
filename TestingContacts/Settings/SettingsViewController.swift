@@ -12,11 +12,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     
     @IBOutlet weak var backgroundView: UIView!
-    
-    var image: UIImage?
-    
+        
     var animator: SettingsAnimator?
-    
     var profileVC: ProfileViewController?
 
     override func viewDidLoad() {
@@ -28,8 +25,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func didPressMyProfile(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        guard let profileVC = storyboard.instantiateViewController(withIdentifier: ProfileViewController.identifier) as? ProfileViewController else { return }
+        guard let profileVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: ProfileViewController.identifier) as? ProfileViewController else { return }
         self.profileVC = profileVC
         profileVC.transitioningDelegate = self
         profileVC.modalPresentationStyle = .fullScreen
@@ -47,13 +43,13 @@ extension SettingsViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .present, offset: 0, interactionController: profileVC.swipeInteractionController!)
+        animator = SettingsAnimator(presentationType: .present, interactionController: profileVC.swipeInteractionController)
         return animator
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let profileVC = profileVC else { return nil }
-        animator = SettingsAnimator(presentationType: .dismiss, offset: 0, interactionController: profileVC.swipeInteractionController!)
+        animator = SettingsAnimator(presentationType: .dismiss, interactionController: profileVC.swipeInteractionController)
         return animator
     }
     

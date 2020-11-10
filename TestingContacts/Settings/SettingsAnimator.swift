@@ -14,22 +14,15 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         case dismiss
     }
 
-    
-    static let duration: TimeInterval = 0.7
-    
     var presentationType: PresentationType
-    
+
+    static let duration: TimeInterval = 0.7
+        
     var offset: CGFloat = UIScreen.main.bounds.width * 0.2
     
     let interactionController: SwipeInteractionController?
 
-    init(presentationType: PresentationType, offset: CGFloat) {
-        self.presentationType = presentationType
-        self.offset = offset
-        self.interactionController = nil
-    }
-    
-    init(presentationType: PresentationType, offset: CGFloat, interactionController: SwipeInteractionController) {
+    init(presentationType: PresentationType, offset: CGFloat = 0, interactionController: SwipeInteractionController? = nil) {
         self.presentationType = presentationType
         self.offset = offset
         self.interactionController = interactionController
@@ -68,9 +61,7 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let duration = transitionDuration(using: transitionContext)
         
         var options = UIView.AnimationOptions.curveEaseInOut
-        
         if interactionController?.interactionInProgress ?? false {
-            print("linear")
             options = UIView.AnimationOptions.curveLinear
         }
         

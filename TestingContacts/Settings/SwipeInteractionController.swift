@@ -29,51 +29,25 @@ class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
     }
     
     @objc func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
-        let newTouch = gestureRecognizer.location(in: self.viewController.view)
-        var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-
-//        let translation = gestureRecognizer.translation(in: gestureRecognizer.view!.superview!)
-//        var progress = (translation.x / UIScreen.main.bounds.width)
-        var progress = (newTouch.x / UIScreen.main.bounds.width)
-//        var progress = initialTouchPoint.x
-
-        print("----------")
-        print("translation", newTouch)
-        print("UIScreen.main.bounds.width", UIScreen.main.bounds.width)
-        print()
-
-//        print("progress 1", easeInOutCubic(x: progress))
-        
+        let touchPoint = gestureRecognizer.location(in: self.viewController.view)
+        var progress = touchPoint.x / UIScreen.main.bounds.width
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
-        print("progress 2", progress)
 
-        print(gestureRecognizer.state.rawValue)
         switch gestureRecognizer.state {
         case .began:
             interactionInProgress = true
-            initialTouchPoint = newTouch
             viewController.dismiss(animated: true, completion: nil)
         case .changed:
             shouldCompleteTransition = progress > 0.5
-            
             update(progress)
-//            update(easeInOutCubic(x: progress))
         case .cancelled:
             interactionInProgress = false
             cancel()
         case .ended:
             interactionInProgress = false
-            if shouldCompleteTransition {
-                finish()
-            } else {
-                cancel()
-            }
+            _ = shouldCompleteTransition ? finish() : cancel()
         default:
             break
         }
-    }
-    
-    func easeInOutCubic(x: CGFloat) -> CGFloat {
-        return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
     }
 }

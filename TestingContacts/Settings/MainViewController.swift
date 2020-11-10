@@ -18,11 +18,10 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func didPressShowSettings(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        guard let settingsViewController = storyboard.instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
-//        settingsVC = settingsViewController
+        guard let settingsViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
         settingsViewController.transitioningDelegate = self
         settingsViewController.modalPresentationStyle = .fullScreen
+        
         present(settingsViewController, animated: true)
     }
 }
