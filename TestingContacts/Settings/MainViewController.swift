@@ -32,7 +32,6 @@ extension MainViewController: UIViewControllerTransitioningDelegate {
         return SettingsAnimator(presentationType: .present)
     }
     
-    // 3
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SettingsAnimator(presentationType: .dismiss)
     }

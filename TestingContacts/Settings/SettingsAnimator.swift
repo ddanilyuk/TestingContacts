@@ -27,48 +27,45 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVC = transitionContext.viewController(forKey: .from),
-              let toVC = transitionContext.viewController(forKey: .to) else { return }
+        guard let fromViewController = transitionContext.viewController(forKey: .from),
+              let toViewController = transitionContext.viewController(forKey: .to) else { return }
         
-        var snapshot = UIView()
-        switch presentationType {
-        case .present:
-            snapshot = toVC.view.snapshotView(afterScreenUpdates: true) ?? UIView()
-        case .dismiss:
-            if let fromVC = fromVC as? SettingsViewController {
-                fromVC.backgroundView.subviews.forEach{ $0.isHidden = true }
-            }
-            snapshot = fromVC.view.snapshotView(afterScreenUpdates: true) ?? UIView()
-        }
-        print(snapshot)
-        snapshot.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        
+        var snapshotView = UIView()
         let containerView = transitionContext.containerView
-        containerView.addSubview(toVC.view)
-        let duration = transitionDuration(using: transitionContext)
-        containerView.addSubview(snapshot)
-
+        
+        
         switch presentationType {
         case .present:
-            toVC.view.isHidden = true
-            snapshot.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
+            snapshotView = toViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+            toViewController.view.isHidden = true
+            snapshotView.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
         case .dismiss:
-            fromVC.view.isHidden = true
-            snapshot.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
+            if let fromViewController = fromViewController as? SettingsViewController {
+                snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+                fromViewController.backgroundView.isHidden = true
+                snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
+                fromViewController.view.isHidden = true
+            }
         }
         
+        containerView.addSubview(toViewController.view)
+        containerView.addSubview(snapshotView)
+        let duration = transitionDuration(using: transitionContext)
 
         UIView.animateKeyframes(
             withDuration: duration,
             delay: 0,
             options: .calculationModeLinear,
             animations: {
+                if let fromViewController = fromViewController as? SettingsViewController {
+                    fromViewController.backgroundView.isHidden = true
+                }
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 1) {
                     switch self.presentationType {
                     case .present:
-                        snapshot.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
+                        snapshotView.layer.transform = CATransform3DMakeTranslation(0, 0, 0)
                     case .dismiss:
-                        snapshot.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
+                        snapshotView.layer.transform = CATransform3DMakeTranslation(UIScreen.main.bounds.width * 0.8, 0, 0)
                     }
                 }
             },
@@ -76,16 +73,15 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
                 switch self.presentationType {
                 case .present:
-                    toVC.view.isHidden = false
+                    toViewController.view.isHidden = false
                     
-                    if let toVC = toVC as? SettingsViewController {
-                        toVC.backgroundView.addSubview(fromVC.view.snapshotView(afterScreenUpdates: true) ?? UIView())
+                    if let toViewController = toViewController as? SettingsViewController {
+                        toViewController.backgroundView.addSubview(fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView())
                     }
                 case .dismiss:
-                    fromVC.view.isHidden = false
+                    fromViewController.view.isHidden = false
                 }
-                snapshot.removeFromSuperview()
-
+                snapshotView.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         )
