@@ -10,18 +10,20 @@ import UIKit
 class MainViewController: UIViewController {
     
     var animator: SettingsAnimator?
+    var settingsVC: SettingsViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     @IBAction func didPressShowSettings(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        guard let settingsVC = storyboard.instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
-
-        settingsVC.transitioningDelegate = self
-        settingsVC.modalPresentationStyle = .fullScreen
-        present(settingsVC, animated: true)
+        guard let settingsViewController = storyboard.instantiateViewController(withIdentifier: SettingsViewController.identifier) as? SettingsViewController else { return }
+        settingsVC = settingsViewController
+        settingsViewController.transitioningDelegate = self
+        settingsViewController.modalPresentationStyle = .fullScreen
+        present(settingsViewController, animated: true)
     }
 }
 
@@ -29,10 +31,12 @@ class MainViewController: UIViewController {
 extension MainViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(presentationType: .present)
+        return SettingsAnimator(presentationType: .present, scale: 0.8)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SettingsAnimator(presentationType: .dismiss)
+//        guard let settingsVC = settingsVC else { return nil }
+
+        return SettingsAnimator(presentationType: .dismiss, scale: 0.8)
     }
 }

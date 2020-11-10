@@ -17,6 +17,8 @@
 		5F8A1D5F255A9672002CBC91 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8A1D5E255A9672002CBC91 /* MainViewController.swift */; };
 		5F8A1D62255A967B002CBC91 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8A1D61255A967B002CBC91 /* SettingsViewController.swift */; };
 		5F8A1D70255ABC73002CBC91 /* SettingsAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8A1D6F255ABC73002CBC91 /* SettingsAnimator.swift */; };
+		5FCE45E7255AD4A000603F48 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCE45E6255AD4A000603F48 /* ProfileViewController.swift */; };
+		5FCE4627255ADD9200603F48 /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCE4626255ADD9200603F48 /* SwipeInteractionController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		5F8A1D5E255A9672002CBC91 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		5F8A1D61255A967B002CBC91 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5F8A1D6F255ABC73002CBC91 /* SettingsAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAnimator.swift; sourceTree = "<group>"; };
+		5FCE45E6255AD4A000603F48 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5FCE4626255ADD9200603F48 /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,8 @@
 				5F8A1D6F255ABC73002CBC91 /* SettingsAnimator.swift */,
 				5F8A1D5E255A9672002CBC91 /* MainViewController.swift */,
 				5F8A1D61255A967B002CBC91 /* SettingsViewController.swift */,
+				5FCE45E6255AD4A000603F48 /* ProfileViewController.swift */,
+				5FCE4626255ADD9200603F48 /* SwipeInteractionController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -173,12 +179,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FCE4627255ADD9200603F48 /* SwipeInteractionController.swift in Sources */,
 				5F26A3ED2555631B00924A8F /* ContactsViewController.swift in Sources */,
 				5F26A4132555930200924A8F /* ScrollViewController.swift in Sources */,
 				5F26A3E92555631B00924A8F /* AppDelegate.swift in Sources */,
 				5F8A1D70255ABC73002CBC91 /* SettingsAnimator.swift in Sources */,
 				5F26A4162555A24000924A8F /* Extensions.swift in Sources */,
 				5F8A1D5F255A9672002CBC91 /* MainViewController.swift in Sources */,
+				5FCE45E7255AD4A000603F48 /* ProfileViewController.swift in Sources */,
 				5F8A1D62255A967B002CBC91 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
