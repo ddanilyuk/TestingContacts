@@ -11,7 +11,7 @@ final class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
     
     // MARK: - Public property
     
-    var interactionInProgress = false
+    public var interactionInProgress = false
     
     // MARK: - Private property
 
@@ -25,16 +25,17 @@ final class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
         prepareGestureRecognizer(in: viewController.view)
     }
     
+    // MARK: - Private Functions
+    
     private func prepareGestureRecognizer(in view: UIView) {
         let gesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
         gesture.edges = .left
         view.addGestureRecognizer(gesture)
     }
     
-    @objc func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+    @objc private func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let touchPoint = gestureRecognizer.location(in: self.viewController.view)
-        var progress = touchPoint.x / UIScreen.main.bounds.width
-        progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
+        let progress = touchPoint.x / UIScreen.main.bounds.width
 
         switch gestureRecognizer.state {
         case .began:

@@ -28,7 +28,7 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         
-        return Self.duration
+        return SettingsAnimator.duration
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -51,8 +51,6 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         case .dismiss:
             if let fromViewController = fromViewController as? PartOverlayViewController {
                 snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
-                
-                // Remove background from viewController (with map)
                 fromViewController.backgroundView.isHidden = true
             }
             snapshotView = fromViewController.view.snapshotView(afterScreenUpdates: true) ?? UIView()
@@ -63,12 +61,10 @@ final class SettingsAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(snapshotView)
         
         // Change animation option to linear when user swipe back
-        var options = UIView.AnimationOptions.curveEaseInOut
-        if interactionController?.interactionInProgress ?? false {
-            options = UIView.AnimationOptions.curveLinear
-        }
+        let isUserSwipeBack = interactionController?.interactionInProgress ?? false
+        let animateOptions: UIView.AnimationOptions = isUserSwipeBack ? .curveLinear : .curveEaseInOut
         
-        UIView.animate(withDuration: duration, delay: 0, options: options) {
+        UIView.animate(withDuration: duration, delay: 0, options: animateOptions) {
             switch self.presentationType {
             case .present:
                 snapshotView.layer.transform = CATransform3DMakeTranslation(0, 0, 0)

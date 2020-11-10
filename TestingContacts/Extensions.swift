@@ -14,7 +14,6 @@ extension UIApplication {
     }
 }
 
-
 extension UIViewController {
     
     class var identifier: String {
@@ -39,25 +38,6 @@ extension UIView {
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         layer.mask = mask
-    }
-    
-    func takeScreenshot() -> UIImage {
-        
-        // Begin context
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
-        
-        // Draw view in that context
-        drawHierarchy(in: self.bounds, afterScreenUpdates: true)
-        
-        // And finally, get image
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        if (image != nil)
-        {
-            return image!
-        }
-        return UIImage()
     }
 }
 
