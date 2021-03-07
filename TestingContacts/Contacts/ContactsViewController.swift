@@ -20,23 +20,65 @@ final class ContactsViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    var contactsArray = [CNContact]()
+    private var contactsArray = [CNContact]()
+    private let contactManager = ContactManager.shared
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        getContacts()
+        
+        contactManager.getCNContacts { [weak self] contacts, error in
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                
+                if let contacts = contacts  {
+                    self?.contactsArray = contacts
+                    self?.tableView.reloadData()
+                }
+            }
+            
+        }
+        
         NotificationCenter.default.addObserver(self, selector:#selector(reloadAfterOpenApp), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getContacts()
+        
+        contactManager.getCNContacts { [weak self] contacts, error in
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                
+                if let contacts = contacts  {
+                    self?.contactsArray = contacts
+                    self?.tableView.reloadData()
+                }
+            }
+        }
     }
     
     @objc func reloadAfterOpenApp() {
-        getContacts()
+        
+        contactManager.getCNContacts { [weak self] contacts, error in
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                
+                if let contacts = contacts  {
+                    self?.contactsArray = contacts
+                    self?.tableView.reloadData()
+                }
+            }
+        }
     }
     
     deinit {
@@ -48,32 +90,32 @@ final class ContactsViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    // MARK: - Public Actions
-    
-    private func getContacts() {
-        contactsArray = []
-        let contactsStore = CNContactStore()
-        
-        contactsStore.requestAccess(for: .contacts) { (isHaveAccess, error) in
-            if error != nil {
-                self.presentGoToSettingsAlert()
-                return
-            }
-            if isHaveAccess {
-                let keys = [CNContactGivenNameKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
-                let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
-                
-                do {
-                    try contactsStore.enumerateContacts(with: fetchRequest) { (contact, _) in
-                        self.contactsArray.append(contact)
-                    }
-                    self.tableView.reloadData()
-                } catch let error {
-                    print("Fetching contacts failed with error: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
+//    // MARK: - Public Actions
+//
+//    private func getContacts() {
+//        contactsArray = []
+//        let contactsStore = CNContactStore()
+//
+//        contactsStore.requestAccess(for: .contacts) { (isHaveAccess, error) in
+//            if error != nil {
+//                self.presentGoToSettingsAlert()
+//                return
+//            }
+//            if isHaveAccess {
+//                let keys = [CNContactGivenNameKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
+//                let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
+//
+//                do {
+//                    try contactsStore.enumerateContacts(with: fetchRequest) { (contact, _) in
+//                        self.contactsArray.append(contact)
+//                    }
+//                    self.tableView.reloadData()
+//                } catch let error {
+//                    print("Fetching contacts failed with error: \(error.localizedDescription)")
+//                }
+//            }
+//        }
+//    }
     
     func presentGoToSettingsAlert() {
         let alertController = UIAlertController(title: "No contacts access", message: "Please go to Settings and turn on the permissions", preferredStyle: .alert)

@@ -32,24 +32,24 @@ final class ScrollViewController: UIViewController {
     // MARK: Private Actions
     
     @objc func keyboardWillShow(sender: NSNotification) {
-        if let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight = keyboardFrame.cgRectValue.height
-
-            let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
-            scrollView.contentInset = contentInsets
-            scrollView.scrollIndicatorInsets = contentInsets
-            
-            var mainViewFrame = self.view.frame
-            mainViewFrame.size.height -= keyboardHeight
-            
-            if (!mainViewFrame.contains(mainTextField.frame.origin) ) {
-                scrollView.scrollRectToVisible(mainTextField.frame, animated: true)
-            }
-        }
+//        if let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+//            let keyboardHeight = keyboardFrame.cgRectValue.height
+//
+//            let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardHeight, right: 0.0)
+//            scrollView.contentInset = contentInsets
+//            scrollView.scrollIndicatorInsets = contentInsets
+//
+//            var mainViewFrame = self.view.frame
+//            mainViewFrame.size.height -= keyboardHeight
+//
+//            if (!mainViewFrame.contains(mainTextField.frame.origin) ) {
+//                scrollView.scrollRectToVisible(mainTextField.frame, animated: true)
+//            }
+//        }
     }
     
     @objc func keyboardWillHide(sender: NSNotification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+//        scrollView.contentInset = UIEdgeInsets.zero
+//        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
 }
